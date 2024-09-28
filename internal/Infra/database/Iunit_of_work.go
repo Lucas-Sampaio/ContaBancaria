@@ -2,7 +2,7 @@ package database
 
 import domain "github.com/Lucas-Sampaio/ContaBancaria/internal/Domain/ContaAggregate"
 
-type UnitOfWork interface {
+type IUnitOfWork interface {
 	Begin() error
 	Commit() error
 	Rollback() error

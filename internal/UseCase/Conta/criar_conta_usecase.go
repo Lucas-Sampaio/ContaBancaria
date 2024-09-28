@@ -6,23 +6,23 @@ import (
 )
 
 type CriarContaUseCase struct {
-	Uow database.UnitOfWork
+	uow database.IUnitOfWork
 }
 
 type CriarContaInput struct {
-	agencia     int
-	numeroConta int64
+	Agencia     int
+	NumeroConta int64
 }
 
-func NewCriarContaUsecase(uow database.UnitOfWork) *CriarContaUseCase {
+func NewCriarContaUsecase(uow database.IUnitOfWork) *CriarContaUseCase {
 	return &CriarContaUseCase{
-		Uow: uow,
+		uow: uow,
 	}
 }
 
 func (usecase *CriarContaUseCase) Execute(input CriarContaInput) error {
-	conta := domain.CriarConta(input.agencia, input.numeroConta)
-	if err := usecase.Uow.ContaRepository().Criar(conta); err != nil {
+	conta := domain.CriarConta(input.Agencia, input.NumeroConta)
+	if err := usecase.uow.ContaRepository().Criar(conta); err != nil {
 		return err
 	}
 	return nil

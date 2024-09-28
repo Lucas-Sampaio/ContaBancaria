@@ -6,40 +6,39 @@ import (
 	"gorm.io/gorm"
 )
 
-type unitOfWork struct {
+type UnitOfWork struct {
 	db          *gorm.DB
 	transaction *gorm.DB
 	contaRepo   domain.IContaRepository
 }
 
-func NewUnitOfWork(db *gorm.DB) UnitOfWork {
-	return &unitOfWork{
+func NewUnitOfWork(db *gorm.DB) *UnitOfWork {
+	return &UnitOfWork{
 		db: db,
 	}
 }
 
-func (u *unitOfWork) Begin() error {
+func (u *UnitOfWork) Begin() error {
 	u.transaction = u.db.Begin()
-	// Reinicializa os repositórios usando a transação.
 	u.contaRepo = repositories.NewContaRepository(u.transaction)
 	return u.transaction.Error
 }
 
-func (u *unitOfWork) Commit() error {
+func (u *UnitOfWork) Commit() error {
 	if u.transaction != nil {
 		return u.transaction.Commit().Error
 	}
 	return nil
 }
 
-func (u *unitOfWork) Rollback() error {
+func (u *UnitOfWork) Rollback() error {
 	if u.transaction != nil {
 		return u.transaction.Rollback().Error
 	}
 	return nil
 }
 
-func (u *unitOfWork) ContaRepository() domain.IContaRepository {
+func (u *UnitOfWork) ContaRepository() domain.IContaRepository {
 	if u.contaRepo == nil {
 		u.contaRepo = repositories.NewContaRepository(u.db)
 	}

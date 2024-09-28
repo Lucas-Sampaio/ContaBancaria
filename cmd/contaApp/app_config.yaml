@@ -1,0 +1,7 @@
+DB_DRIVER: sqlserver
+DB_HOST: localhost
+DB_PORT: 1433
+DB_USER: sa
+DB_PASSWORD: SqlServer2022!
+DB_NAME: ContaBancaria
+WEB_SERVER_PORT: :8000
