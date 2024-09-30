@@ -6,7 +6,6 @@ require (
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-playground/validator/v10 v10.22.1
 	github.com/google/uuid v1.6.0
-	github.com/google/wire v0.6.0
 	github.com/spf13/viper v1.19.0
 	gorm.io/driver/sqlserver v1.5.3
 	gorm.io/gorm v1.25.12

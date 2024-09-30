@@ -2,11 +2,12 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
+	errors_api "github.com/Lucas-Sampaio/ContaBancaria/internal/Api/errors"
 	"github.com/Lucas-Sampaio/ContaBancaria/internal/Infra/database"
 	usecase "github.com/Lucas-Sampaio/ContaBancaria/internal/UseCase/Conta"
-	errors_api "github.com/Lucas-Sampaio/ContaBancaria/internal/api/errors"
 )
 
 type ContaController struct {
@@ -19,7 +20,7 @@ func NewContaController(uow database.IUnitOfWork) *ContaController {
 	}
 }
 
-func (controller *ContaController) Create(resp http.ResponseWriter, req *http.Request) {
+func (controller *ContaController) Criar(resp http.ResponseWriter, req *http.Request) {
 	var dto usecase.CriarContaInput
 	err := json.NewDecoder(req.Body).Decode(&dto)
 	if err != nil {
@@ -35,4 +36,24 @@ func (controller *ContaController) Create(resp http.ResponseWriter, req *http.Re
 
 	resp.WriteHeader(http.StatusCreated)
 	json.NewEncoder(resp).Encode(conta)
+}
+
+func (controller *ContaController) Desativar(resp http.ResponseWriter, req *http.Request) {
+
+	agenciaConta := req.PathValue("agenciaConta")
+	var dto usecase.DesativarContaInput
+	if agenciaConta == "" {
+		errors_api.SendErrorResponse(resp, http.StatusNotFound, "", errors.New("agencia e conta nao informada"))
+		return
+	}
+	dto.AgenciaNumeroConta = agenciaConta
+
+	usecase := usecase.NewDesativarContaUsecase(controller.uow)
+	err := usecase.Execute(dto)
+	if err != nil {
+		errors_api.SendErrorResponse(resp, http.StatusBadRequest, "", err)
+		return
+	}
+
+	resp.WriteHeader(http.StatusNoContent)
 }
