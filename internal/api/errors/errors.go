@@ -61,15 +61,15 @@ func getFieldDetails(validationErrors validator.ValidationErrors) []FieldError {
 		case "required":
 			message = fmt.Sprintf("O campo '%s' é obrigatório.\n", fieldError.Field())
 		case "min":
-			message = fmt.Sprintf("O campo '%s' deve ter pelo menos %s caracteres.\n", fieldError.Field(), fieldError.Param())
+			message = fmt.Sprintf("O campo '%s' deve ter pelo menos %s caracteres.", fieldError.Field(), fieldError.Param())
 		case "max":
-			message = fmt.Sprintf("O campo '%s' deve ter no máximo %s caracteres.\n", fieldError.Field(), fieldError.Param())
+			message = fmt.Sprintf("O campo '%s' deve ter no máximo %s caracteres.", fieldError.Field(), fieldError.Param())
 		case "gt":
-			message = fmt.Sprintf("O campo '%s' deve ser maior que %s.\n", fieldError.Field(), fieldError.Param())
+			message = fmt.Sprintf("O campo '%s' deve ser maior que %s.", fieldError.Field(), fieldError.Param())
 		case "gte":
-			message = fmt.Sprintf("O campo '%s' deve ser maior ou igual que %s.\n", fieldError.Field(), fieldError.Param())
+			message = fmt.Sprintf("O campo '%s' deve ser maior ou igual que %s.", fieldError.Field(), fieldError.Param())
 		default:
-			message = fmt.Sprintf("Erro no campo '%s': %s\n", fieldError.Field(), fieldError.Error())
+			message = fmt.Sprintf("Erro no campo '%s': %s", fieldError.Field(), fieldError.Error())
 		}
 
 		details = append(details, FieldError{
