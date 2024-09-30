@@ -6,6 +6,7 @@ import (
 
 	"github.com/Lucas-Sampaio/ContaBancaria/internal/Infra/database"
 	usecase "github.com/Lucas-Sampaio/ContaBancaria/internal/UseCase/Conta"
+	errors_api "github.com/Lucas-Sampaio/ContaBancaria/internal/api/errors"
 )
 
 type ContaController struct {
@@ -22,14 +23,16 @@ func (controller *ContaController) Create(resp http.ResponseWriter, req *http.Re
 	var dto usecase.CriarContaInput
 	err := json.NewDecoder(req.Body).Decode(&dto)
 	if err != nil {
-		http.Error(resp, err.Error(), http.StatusBadRequest)
+		errors_api.SendErrorResponse(resp, http.StatusInternalServerError, "", err)
 		return
 	}
 	usecase := usecase.NewCriarContaUsecase(controller.uow)
-	err = usecase.Execute(dto)
+	conta, err := usecase.Execute(dto)
 	if err != nil {
-		http.Error(resp, err.Error(), http.StatusBadRequest)
+		errors_api.SendErrorResponse(resp, http.StatusBadRequest, "", err)
 		return
 	}
+
 	resp.WriteHeader(http.StatusCreated)
+	json.NewEncoder(resp).Encode(conta)
 }
