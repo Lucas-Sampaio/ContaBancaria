@@ -57,3 +57,43 @@ func (controller *ContaController) Desativar(resp http.ResponseWriter, req *http
 
 	resp.WriteHeader(http.StatusNoContent)
 }
+
+func (controller *ContaController) Bloquear(resp http.ResponseWriter, req *http.Request) {
+
+	agenciaConta := req.PathValue("agenciaConta")
+	var dto usecase.BloquearContaInput
+	if agenciaConta == "" {
+		errors_api.SendErrorResponse(resp, http.StatusNotFound, "", errors.New("agencia e conta nao informada"))
+		return
+	}
+	dto.AgenciaNumeroConta = agenciaConta
+
+	usecase := usecase.NewBloquearContaUsecase(controller.uow)
+	err := usecase.Execute(dto)
+	if err != nil {
+		errors_api.SendErrorResponse(resp, http.StatusBadRequest, "", err)
+		return
+	}
+
+	resp.WriteHeader(http.StatusNoContent)
+}
+
+func (controller *ContaController) Ativar(resp http.ResponseWriter, req *http.Request) {
+
+	agenciaConta := req.PathValue("agenciaConta")
+	var dto usecase.AtivarContaInput
+	if agenciaConta == "" {
+		errors_api.SendErrorResponse(resp, http.StatusNotFound, "", errors.New("agencia e conta nao informada"))
+		return
+	}
+	dto.AgenciaNumeroConta = agenciaConta
+
+	usecase := usecase.NewAtivarContaUsecase(controller.uow)
+	err := usecase.Execute(dto)
+	if err != nil {
+		errors_api.SendErrorResponse(resp, http.StatusBadRequest, "", err)
+		return
+	}
+
+	resp.WriteHeader(http.StatusNoContent)
+}

@@ -33,6 +33,10 @@ func (c *Conta) Desativar() error {
 	if c.SaldoDisponivel > 0 {
 		return errors.New("Conta nao pode ser desativada porque possui saldo disponivel")
 	}
+
+	if c.SaldoDisponivel < 0 {
+		return errors.New("Conta nao pode ser desativada porque possui saldo negativado")
+	}
 	c.Status = Desativada
 	return nil
 }
@@ -45,5 +49,10 @@ func (c *Conta) Bloquear() error {
 		return errors.New("Conta desativada nao pode ser bloqueada")
 	}
 	c.Status = Bloqueada
+	return nil
+}
+
+func (c *Conta) Ativar() error {
+	c.Status = Ativa
 	return nil
 }
