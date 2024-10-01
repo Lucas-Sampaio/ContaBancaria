@@ -3,7 +3,7 @@ package webserver
 import (
 	"net/http"
 
-	"github.com/Lucas-Sampaio/ContaBancaria/internal/api/controllers"
+	"github.com/Lucas-Sampaio/ContaBancaria/internal/Api/controllers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -38,7 +38,10 @@ func (s *WebServer) Start() error {
 
 func (s *WebServer) configureRouters() {
 	s.router.Route("/conta", func(r chi.Router) {
-		r.Post("/", s.contaController.Create)
+		r.Post("/", s.contaController.Criar)
+		r.Patch("/{agenciaConta}/desativar", s.contaController.Desativar)
+		r.Patch("/{agenciaConta}/bloquear", s.contaController.Bloquear)
+		r.Patch("/{agenciaConta}/ativar", s.contaController.Ativar)
 	})
 }
 

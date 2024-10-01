@@ -28,7 +28,7 @@ func NewCriarContaUsecase(uow database.IUnitOfWork) *CriarContaUseCase {
 
 func (usecase *CriarContaUseCase) Execute(input CriarContaInput) (*domain.Conta, error) {
 
-	err := validateInput(input)
+	err := input.validate()
 
 	if err != nil {
 		var format string = err.Error()
@@ -51,7 +51,7 @@ func (usecase *CriarContaUseCase) Execute(input CriarContaInput) (*domain.Conta,
 }
 
 // Função para validar o input
-func validateInput(input CriarContaInput) error {
+func (input *CriarContaInput) validate() error {
 	validate := validator.New()
 	return validate.Struct(input)
 }
