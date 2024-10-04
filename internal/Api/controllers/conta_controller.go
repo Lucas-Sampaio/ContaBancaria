@@ -97,3 +97,15 @@ func (controller *ContaController) Ativar(resp http.ResponseWriter, req *http.Re
 
 	resp.WriteHeader(http.StatusNoContent)
 }
+
+func (controller *ContaController) ObterContas(resp http.ResponseWriter, req *http.Request) {
+	usecase := usecase.NewObterContasUseCase(controller.uow)
+	contas, err := usecase.Execute()
+	if err != nil {
+		errors_api.SendErrorResponse(resp, http.StatusBadRequest, "", err)
+		return
+	}
+
+	resp.WriteHeader(http.StatusOK)
+	json.NewEncoder(resp).Encode(contas)
+}

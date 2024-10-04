@@ -38,6 +38,7 @@ func (s *WebServer) Start() error {
 
 func (s *WebServer) configureRouters() {
 	s.router.Route("/conta", func(r chi.Router) {
+		r.Get("/", s.contaController.ObterContas)
 		r.Post("/", s.contaController.Criar)
 		r.Patch("/{agenciaConta}/desativar", s.contaController.Desativar)
 		r.Patch("/{agenciaConta}/bloquear", s.contaController.Bloquear)
