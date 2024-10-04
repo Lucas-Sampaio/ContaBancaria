@@ -35,3 +35,13 @@ func (contaRepository *ContaRepository) ObterConta(agencia int, numero int64) (*
 func (contaRepository *ContaRepository) Atualizar(conta *domain.Conta) error {
 	return contaRepository.DB.Save(conta).Error
 }
+
+func (contaRepository *ContaRepository) ObterContas() ([]domain.Conta, error) {
+
+	var contas []domain.Conta
+	result := contaRepository.DB.Find(&contas)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return contas, nil
+}

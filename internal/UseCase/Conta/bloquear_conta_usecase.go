@@ -6,7 +6,6 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-
 type BloquearContaUseCase struct {
 	uow database.IUnitOfWork
 }
