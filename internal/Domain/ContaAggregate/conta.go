@@ -2,12 +2,10 @@ package domain
 
 import (
 	"errors"
-
-	seedwork "github.com/Lucas-Sampaio/ContaBancaria/internal/Domain/SeedWork"
 )
 
 type Conta struct {
-	ID              seedwork.ID `gorm:"type:uniqueidentifier;primary_key"`
+	ID              int         `gorm:"primaryKey;autoIncrement"`
 	Agencia         int         `gorm:"type:int;not null"`
 	Numero          int64       `gorm:"type:bigint;not null"`
 	SaldoDisponivel float64     `gorm:"type:decimal(10,4);not null"`
@@ -16,7 +14,6 @@ type Conta struct {
 
 func CriarConta(agencia int, numeroConta int64) *Conta {
 	conta := &Conta{
-		ID:      seedwork.NewId(),
 		Numero:  numeroConta,
 		Agencia: agencia,
 		Status:  Ativa,
